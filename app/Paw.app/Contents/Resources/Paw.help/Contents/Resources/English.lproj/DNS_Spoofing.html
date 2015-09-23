@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>DNS Spoofing</title>
+		<link href="../css/help.less.min.css" rel="stylesheet" media="all" />
+	</head>
+	<body>
+		<!-- AppleSegStart="DNS Spoofing" -->
+		<div><a name="DNS_Spoofing" id="DNS_Spoofing"></a></div>
+		<h1>DNS Spoofing</h1>
+
+<h2>What is DNS Spoofing?</h2>
+
+<p>Let's say you want to access <code>http://luckymarmot.com/paw</code> on Server A, and the domain name <code>luckymarmot.com</code> is pointing to Server B (not Server A). Then, what you need is to connect to Server A while sending an HTTP Header <code>Host: luckymarmot.com</code>.</p>
+
+<p>In fact, many web servers have the notion of <em>virtual hosts</em> or <em>server blocks</em> (<a href="http://httpd.apache.org/docs/2.0/vhosts/">Apache Virtual Hosts</a>, <a href="http://wiki.nginx.org/ServerBlockExample">Nginx Server Blocks</a>), so when a request is handled, the response will depend on the HTTP <code>Host</code> header.</p>
+
+<p>Most, if not all, web browsers and HTTP libraries automatically set that header for you depending on the URL you've set (if URL is <code>http://echo.luckymarmot.com/test</code>, host will be <code>echo.luckymarmot.com</code>). Of course Paw send it automatically too, but you have the ability to override it.</p>
+
+<h2>When can it be useful?</h2>
+
+<p>Well, it's up to your needs! There are 2 main cases:</p>
+
+<ul>
+<li><p>You are testing a new server, and you didn't pointed your domain name to that new server yet. You want to know how the server will react when it visitors/API consumers will access that through the main domain name.</p></li>
+<li><p>Your web service is running in a cloud infrastructure, behind a load balancer. Then your domain name is pointing to the load balancer which forwards requests to the appropriate server. To test a specific server, avoiding the load balancer, you'll have to connect to the server's IP address or hostname (e.g. ec2-111-111-111-111.compute-1.amazonaws.com if you're running on Amazon EC2), while pretending to connect to the main domain name, using the <code>Host</code> HTTP header.</p></li>
+</ul>
+
+<h2>Example with Paw</h2>
+
+<p>We want to access <code>http://luckymarmot.com/paw</code> on the server <code>ec2-111-111-111-111.compute-1.amazonaws.com</code>:</p>
+
+<ul>
+<li>Set the URL field: <code>http://ec2-111-111-111-111.compute-1.amazonaws.com/paw</code></li>
+<li>Add an HTTP Header <code>Host</code> and set its value to <code>luckymarmot.com</code></li>
+</ul>
+
+<p>That's all done! The server <code>ec2-111-111-111-111.compute-1.amazonaws.com</code> will be asked to serve the page <code>/paw</code> for the host <code>luckymarmot.com</code>.</p>
+
+		<!-- AppleSegEnd -->
+	</body>
+</html>
